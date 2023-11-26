@@ -56,6 +56,16 @@ navigator.mediaDevices.getUserMedia(constraints)
             }
         }
 
+        audioBtn.onclick = () => {
+            if(stream.getAudioTracks()[0].enabled == true){
+                stream.getAudioTracks()[0].enabled = false;
+                audioBtn.textContent = "Unmuted";
+            }else{
+                stream.getAudioTracks()[0].enabled = true;
+                audioBtn.textContent = "Muted";
+            }
+        }
+
         localVideo.onloadedmetadata = () => {
             localVideo.play();
         }
@@ -77,13 +87,6 @@ navigator.mediaDevices.getUserMedia(constraints)
         })
 });
 
-audioBtn.addEventListener('click', function () {
-    // Toggle nilai muted saat tombol diklik
-    localVideo.muted = !localVideo.muted;
-
-    // Mengubah teks tombol sesuai dengan status audio
-    audioBtn.textContent = localVideo.muted ? 'Unmute' : 'Mute';
-  });
 
 peer.on("open", function(id){
     console.log("Your id: ", id);
