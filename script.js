@@ -24,7 +24,25 @@ let localShareScreenStream;
 let mediaRecorder;
 let chunks = [];
 
-navigator.mediaDevices.getUserMedia({ audio: false, video: true })
+let constraints; 
+
+if(window.innerWidth >= 768){
+    constraints = {
+        audio: true, 
+        video: true
+    }
+}else{
+    constraints = {
+        video: {
+            facingMode: 'user'
+        },
+        audio: true
+    }
+}
+
+console.log(constraints);
+
+navigator.mediaDevices.getUserMedia(constraints)
     .then(stream => {
         localStream = stream;
         localVideo.srcObject = stream;
@@ -38,23 +56,11 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: true })
             }
         }
 
-        audioBtn.onclick = () => {
-            if(stream.getAudioTracks()[0].enabled == true){
-                stream.getAudioTracks()[0].enabled = false;
-                // localVideo.muted = true;
-                audioBtn.textContent = "Unmuted";
-            }else{
-                stream.getAudioTracks()[0].enabled = true;
-                // localVideo.muted = false;
-                audioBtn.textContent = "Muted";
-            }
-        } 
-
         localVideo.onloadedmetadata = () => {
             localVideo.play();
         }
         sharescreenBtn.addEventListener("click", function(){
-            navigator.mediaDevices.getDisplayMedia({ audio: false, video: true })
+            navigator.mediaDevices.getDisplayMedia({ audio: true, video: true })
                 .then(stream1 => {
                     localVideo.srcObject = stream1;
                     console.log(stream.getVideoTracks()[0])
@@ -70,6 +76,14 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: true })
             });
         })
 });
+
+audioBtn.addEventListener('click', function () {
+    // Toggle nilai muted saat tombol diklik
+    localVideo.muted = !localVideo.muted;
+
+    // Mengubah teks tombol sesuai dengan status audio
+    audioBtn.textContent = localVideo.muted ? 'Unmute' : 'Mute';
+  });
 
 peer.on("open", function(id){
     console.log("Your id: ", id);
