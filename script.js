@@ -97,6 +97,14 @@ peer.on("call", function(call){
     })
 })
 
+peer.on('disconnected', () => {
+    alert('Disconnected');
+});
+
+connection.on('error', (err) => {
+    alert("Error", err);
+});
+
 recordBtn.addEventListener("click", function(){
     mediaRecorder = new MediaRecorder(localStream);
 
