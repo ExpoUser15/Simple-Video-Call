@@ -34,7 +34,7 @@ if(window.innerWidth >= 768){
 }else{
     constraints = {
         video: {
-            facingMode: 'user'
+            facingMode: 'environment'
         },
         audio: true
     }
