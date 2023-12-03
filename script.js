@@ -33,14 +33,14 @@ if(window.innerWidth >= 768){
 let bool = false;
 const constraints = {
     video: {
-        facingMode: bool ? 'user' : 'environment'
+        facingMode: 'user'
     },
     audio: true
 }
 facingModeBtn.addEventListener('click', handleFacingMode);
 function handleFacingMode(){
     bool = !bool 
-    console.log(bool)
+    constraints.video.facingMode =  bool ? 'user' : 'environment'
 }
 
 navigator.mediaDevices.getUserMedia(constraints)
