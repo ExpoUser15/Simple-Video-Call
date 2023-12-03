@@ -25,9 +25,21 @@ let mediaRecorder;
 let chunks = [];
 
 if(window.innerWidth >= 768){
-    facingModeBtn.style.display = "block";
-}else{
     facingModeBtn.style.display = "none";
+}else{
+    facingModeBtn.style.display = "block";
+}
+
+let bool = false;
+const constraints = {
+    video: {
+        facingMode: bool ? 'user' : 'environment'
+    },
+    audio: true
+}
+facingModeBtn.addEventListener('click', handleFacingMode);
+function handleFacingMode(){
+    bool = !bool 
 }
 
 navigator.mediaDevices.getUserMedia(constraints)
@@ -75,19 +87,6 @@ navigator.mediaDevices.getUserMedia(constraints)
             });
         })
 });
-
-let bool = false;
-function handleFacingMode(track){
-    bool = !bool
-    const constraints = {
-        video: {
-            facingMode: bool ? 'user' : 'environment'
-        },
-        audio: true
-    }
-    track.applyConstraints(constraints);
-}
-
 
 peer.on("open", function(id){
     console.log("Your id: ", id);
