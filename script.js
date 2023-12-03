@@ -40,6 +40,8 @@ const constraints = {
 facingModeBtn.addEventListener('click', async function(){
     const videoTracks = localVideo.srcObject.getVideoTracks();
 
+    let currentFacingMode = 'user';
+
     videoTracks.forEach(track => {
         track.stop();
     });
