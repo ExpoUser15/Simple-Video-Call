@@ -37,22 +37,30 @@ const constraints = {
     audio: true
 }
 
+facingModeBtn.addEventListener('click', async function(){
+    const videoTracks = localVideo.srcObject.getVideoTracks();
+
+    videoTracks.forEach(track => {
+        track.stop();
+    });
+
+    const constraints = {
+        video: { facingMode: currentFacingMode }
+    };
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints)
+        localStream = stream;
+        localVideo.srcObject = stream;
+    } catch (error) {
+        console.log("gagal mengakses kamera");
+    }
+    currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
+})
+
 navigator.mediaDevices.getUserMedia(constraints)
     .then(stream => {
         localStream = stream;
         localVideo.srcObject = stream;
-
-        facingModeBtn.addEventListener('click', function(){
-            const dad = stream.getTracks()[1];
-            const da = dad.getConstraints()
-            if(da.facingMode = 'environment'){
-                da.facingMode = 'user';
-                dad.applyConstraints(da);
-            }else{
-                da.facingMode = 'environment';
-                dad.applyConstraints(da);
-            }
-        })
 
         videoBtn.onclick = () => {
             if(stream.getVideoTracks()[0].enabled == true){
@@ -94,6 +102,7 @@ navigator.mediaDevices.getUserMedia(constraints)
             });
         })
 });
+
 
 peer.on("open", function(id){
     console.log("Your id: ", id);
