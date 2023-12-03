@@ -40,6 +40,7 @@ const constraints = {
 facingModeBtn.addEventListener('click', handleFacingMode);
 function handleFacingMode(){
     bool = !bool 
+    console.log(bool)
 }
 
 navigator.mediaDevices.getUserMedia(constraints)
