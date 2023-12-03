@@ -17,35 +17,24 @@ const recordBtn = document.getElementById("recordBtn");
 const stopBtn = document.getElementById("stopBtn");
 const snapshotBtn = document.getElementById("snapshotBtn");
 const sharescreenBtn = document.getElementById("sharescreenBtn");
-
+const facingModeBtn = document.getElementById('facingModeBtn');
 
 let localStream;
 let localShareScreenStream;
 let mediaRecorder;
 let chunks = [];
 
-let constraints; 
-
 if(window.innerWidth >= 768){
-    constraints = {
-        audio: true, 
-        video: true
-    }
+    facingModeBtn.style.display = "block";
 }else{
-    constraints = {
-        video: {
-            facingMode: 'environment'
-        },
-        audio: true
-    }
+    facingModeBtn.style.display = "none";
 }
-
-console.log(constraints);
 
 navigator.mediaDevices.getUserMedia(constraints)
     .then(stream => {
         localStream = stream;
         localVideo.srcObject = stream;
+
         videoBtn.onclick = () => {
             if(stream.getVideoTracks()[0].enabled == true){
                 stream.getVideoTracks()[0].enabled = false;
@@ -86,6 +75,18 @@ navigator.mediaDevices.getUserMedia(constraints)
             });
         })
 });
+
+let bool = false;
+function handleFacingMode(track){
+    bool = !bool
+    const constraints = {
+        video: {
+            facingMode: bool ? 'user' : 'environment'
+        },
+        audio: true
+    }
+    track.applyConstraints(constraints);
+}
 
 
 peer.on("open", function(id){
